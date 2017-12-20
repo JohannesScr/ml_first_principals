@@ -19,6 +19,9 @@ refers to the method as multiple linear regression.
 
 import matplotlib.pyplot as plt
 import numpy as np
+import math
+from scipy.stats import pearsonr
+import statistics as stats
 
 # input variable
 x = np.array([1, 2, 4, 3, 5])
@@ -52,11 +55,36 @@ y_minus_mean_y = y - mean_y
 
 x_minus_mean_x_times_y_minus_mean_y = x_minus_mean_x * y_minus_mean_y
 
+# calculate B1
 B1 = sum(x_minus_mean_x_times_y_minus_mean_y) / sum(x_minus_mean_x_squared)
 
+# calculate B0
 B0 = mean_y - B1 * mean_x
 
+# make predictions
 p_ = B1 * x + B0
 
 plt.plot(x, p_)
 plt.show()
+
+# estimating error
+# Root Mean Squared Error
+# RMSE = sqrt(sum((p_i - y_i) ** 2)/ len(p))
+
+RMSE = math.sqrt(sum((p_ - y) ** 2) / len(p_))
+# RMSE = 0.69
+# Therefore we are on average wrong by about 0.48 units
+
+# Alternative to calculate B1
+# B1 = correlation(x, y) * standard_deviation(y) / standard_deviation(x)
+B1_alternative = pearsonr(x, y)[0] * stats.stdev(y, mean_y) / stats.stdev(x, mean_x)
+
+
+
+
+
+
+
+
+
+
